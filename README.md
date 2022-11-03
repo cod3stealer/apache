@@ -9,7 +9,7 @@ y configuro el **docker-compose.yml** para definir al contenedor.
 Por otro lado, también contiene los archivos docker-compose.yml (el cual creo de manera manual 
 igual que los demás archivos), info.php, README.md
 
-Dentro del docker-compose.yml declaro el contenedor con su imagen, puerto y volumenes.
+Dentro del docker-compose.yml declaro el contenedor con su imagen, puerto y volumenes
 
 ```
 version: "3.3"
@@ -42,7 +42,9 @@ Por otro lado, en localhost/info.php debería aparecer una tabla de información
 
 # Mapeo del Documento Root
 
-En docker-compose.yml:
+Para mapear este documento, hay que hacer un volumen asociado al root en la configuración
+del documento docker-compose.yml
+
 ```
 version: "3.3"
 services:
@@ -52,12 +54,12 @@ services:
   ports:
     - "80:80"
   volumes:
-  **- /home/asir2a/Escritorio/SRI/tuto/server:/var/www/html**
-    - configApache:/etc/apache2
+    - /home/asir2a/Escritorio/SRI/tuto/server:/var/www/html
+  **- configApache:/etc/apache2**
 volumes:
-   configApache:
+ **configApache:**
 ```
-Para mapear la ruta local del host con la ruta del servicio HTML del container hay que asociarla a la ruta del contenedor.
-
+Lo próximo que se debe hacer es ir al apartado de volúmenes del VCode y seleccionar server_configApache con el clic derecho y abrirno en un Dev Container.
+Una vez allí, se puede descargar toda la configuración necesaria a la carpeta del server si así se quiere.
 
 
