@@ -1,0 +1,12 @@
+version: "3.3"
+services:
+ apache-XD:
+  container_name: asir_apache
+  image: php:7.2-apache
+  ports:
+    - "80:80"
+  volumes:
+    - /home/asir2a/Escritorio/SRI/tuto/server:/var/www/html
+    - configApache:/etc/apache2
+volumes:
+  configApache:
