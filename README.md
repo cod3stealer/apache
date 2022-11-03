@@ -9,7 +9,7 @@ y configuro el **docker-compose.yml** para definir al contenedor.
 Por otro lado, también contiene los archivos docker-compose.yml (el cual creo de manera manual 
 igual que los demás archivos), info.php, README.md
 
-Dentro del docker-compose.yml declaro el contenedor con su imagen, puerto y volumenes
+Dentro del docker-compose.yml declaro el contenedor con su imagen, puerto y volumenes.
 
 ```
 version: "3.3"
