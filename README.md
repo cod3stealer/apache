@@ -42,7 +42,7 @@ Por otro lado, en localhost/info.php debería aparecer una tabla de información
 
 # Mapeo del Documento Root
 
-Para mapear este documento hay que poner la línea de código en negrita en el documento docker-compose.yml:
+Para mapear este documento hay que poner la `**línea de código**` en el documento docker-compose.yml:
 
 ```
 version: "3.3"
@@ -53,7 +53,7 @@ services:
   ports:
     - "80:80"
   volumes:
-  **- /home/asir2a/Escritorio/SRI/tuto/server:/var/www/html**
+    - /home/asir2a/Escritorio/SRI/tuto/server:/var/www/html
     - configApache:/etc/apache2
 volumes:
    configApache:
