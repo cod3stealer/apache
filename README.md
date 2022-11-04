@@ -53,7 +53,7 @@ services:
   ports:
     - "80:80"
   volumes:
-    - /home/asir2a/Escritorio/SRI/tuto/server:/var/www/html
+  **- /home/asir2a/Escritorio/SRI/tuto/server:/var/www/html**
     - configApache:/etc/apache2
 volumes:
    configApache:
