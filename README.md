@@ -42,8 +42,7 @@ Por otro lado, en localhost/info.php debería aparecer una tabla de información
 
 # Mapeo del Documento Root
 
-Para mapear este documento, hay que hacer un volumen asociado al root en la configuración
-del documento docker-compose.yml
+Para mapear este documento hay que poner la línea de código en negrita en el documento docker-compose.yml:
 
 ```
 version: "3.3"
@@ -54,12 +53,8 @@ services:
   ports:
     - "80:80"
   volumes:
-    - /home/asir2a/Escritorio/SRI/tuto/server:/var/www/html
-  **- configApache:/etc/apache2**
+  **- /home/asir2a/Escritorio/SRI/tuto/server:/var/www/html**
+    - configApache:/etc/apache2
 volumes:
- **configApache:**
+   configApache:
 ```
-Lo próximo que se debe hacer es ir al apartado de volúmenes del VCode y seleccionar server_configApache con el clic derecho y abrirno en un Dev Container.
-Una vez allí, se puede descargar toda la configuración necesaria a la carpeta del server si así se quiere.
-
-
