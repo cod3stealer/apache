@@ -5,6 +5,7 @@ services:
   image: php:7.2-apache
   ports:
     - "80:80"
+    - "8000:8000"
   volumes:
     - /home/asir2a/Escritorio/SRI/tuto/server:/var/www/html
     - configApache:/etc/apache2
