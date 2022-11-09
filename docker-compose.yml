@@ -7,7 +7,7 @@ services:
     - "80:80"
     - "8000:8000"
   volumes:
-    - /home/asir2a/Escritorio/SRI/tuto/server:/var/www/html
-    - configApache:/etc/apache2
+    - /home/asir2a/Escritorio/SRI/tuto/server/html:/var/www/html:ro
+    - /home/asir2a/Escritorio/SRI/tuto/server/apache2:/etc/apache2
 volumes:
   configApache:
