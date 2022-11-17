@@ -267,6 +267,7 @@ Dentro de la configuración de los sitios habilitados (sites-enabled), hay que a
 
 Se deben configurar ambos archivos (*000-default.conf* / *002-default.conf*) para que trabajen en el puerto 80:
 
+***sites-enables/000-default.conf:***
 ```
 <VirtualHost *:80>
 
@@ -279,9 +280,9 @@ Se deben configurar ambos archivos (*000-default.conf* / *002-default.conf*) par
 	ErrorLog ${APACHE_LOG_DIR}/error.log
 	CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-	<Directory "~/Escritorio/SRI/tuto/servers/html/sitio2">
-    	DirectoryIndex index.html
-	</Directory>
+**<Directory "~/Escritorio/SRI/tuto/servers/html/sitio2">**
+**  	DirectoryIndex index.html                          **
+**</Directory>                                           **
 	
 </VirtualHost>
 ```
