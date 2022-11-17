@@ -5,9 +5,36 @@ services:
   image: php:7.2-apache
   ports:
     - "80:80"
-    - "8000:8000"
   volumes:
     - /home/asir2a/Escritorio/SRI/tuto/server/html:/var/www/html:ro
     - /home/asir2a/Escritorio/SRI/tuto/server/apache2:/etc/apache2
-volumes:
-  configApache:
+  networks:
+      bind9_subnet:
+        ipv4_address: 10.0.1.253
+ 
+ asir_bind9:
+   container_name: asir_bind9
+   image: internetsystemsconsortium/bind9:9.16
+   ports:
+     - 5300:53/udp
+     - 5300:53/tcp
+   volumes:
+     - /home/asir2a/Escritorio/SRI/tuto/server/bind9/conf:/etc/bind
+     - /home/asir2a/Escritorio/SRI/tuto/server/bind9/zonas:/var/lib/bind
+   networks:
+      bind9_subnet:
+        ipv4_address: 10.0.1.254
+ 
+ ASIR_DNS_cliente:
+  container_name: asir_cliente 
+  image: alpine
+  stdin_open: true
+  tty: true
+  dns:
+    - 10.0.1.254
+  networks:
+    bind9_subnet:
+      ipv4_address: 10.0.1.252
+networks:
+  bind9_subnet:
+    external: true
