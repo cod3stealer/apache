@@ -250,6 +250,7 @@ Este comando debería funcionar sin problemas si se ha hecho bien la configuraci
 # Prueba a utilizar la directiva DirectoryIndex
 
 Dentro de la configuración de los sitios habilitados (sites-enabled), hay que añadir las lineas de código:
+***(Para que los sitios pasen de estar DISPONIBLES a HABILITADOS hay que ejecutar el comando `a2ensite NombreSitio`)***
 **000-default.conf**
 ```
 <Directory "~/Escritorio/SRI/tuto/servers/html/sitio1">
