@@ -241,3 +241,47 @@ Dentro del archivo **000-default.conf**:
 ```
 
 ## Comprobación del funcionamiento:
+
+Al hacer docker-compose up, hay que acceder a la shell del contenedor Alpine (cliente) y desde dentro hacer un:
+`ping maravillosas.fabulas.com` y un `ping oscuras.fabulas.com`
+
+Este comando debería funcionar sin problemas si se ha hecho bien la configuración del apache, dns y cliente.
+
+# Prueba a utilizar la directiva DirectoryIndex
+
+Dentro de la configuración de los sitios habilitados (sites-enabled), hay que añadir las lineas de código:
+**000-default.conf**
+```
+<Directory "~/Escritorio/SRI/tuto/servers/html/sitio1">
+  	DirectoryIndex index.html
+</Directory>
+```
+
+**002-default.conf**
+```
+<Directory "~/Escritorio/SRI/tuto/servers/html/sitio2">
+  	DirectoryIndex index.html
+</Directory>
+```
+# Configura dos virtual-host separados para cada dominio en el mismo puerto (80)
+
+Se deben configurar ambos archivos (*000-default.conf* / *002-default.conf*) para que trabajen en el puerto 80:
+
+```
+<VirtualHost *:80>
+
+	ServerName ns.fabulas.com.
+
+	ServerAdmin webmaster@localhost
+	DocumentRoot /var/www/html/sitio2
+
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+	<Directory "~/Escritorio/SRI/tuto/servers/html/sitio2">
+    	DirectoryIndex index.html
+	</Directory>
+	
+</VirtualHost>
+```
