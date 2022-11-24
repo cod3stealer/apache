@@ -56,23 +56,17 @@ services:
       bind9_subnet:
         ipv4_address: 10.0.1.55
  firefox:
-  image: lscr.io/linuxserver/firefox:latest
-  container_name: firefox
-  security_opt:
-    - seccomp:unconfined 
-  environment:
-    - PUID=1000
-    - PGID=1000
-    - TZ=Europe/London
-  volumes:
-    - /docker/appdata/firefox:/config
-  ports:
-    - 3001:3001
-  shm_size: "1gb"
-  restart: unless-stopped
-  networks:
+    container_name: firefox
+    image: jlesage/firefox
+    ports: 
+      - '5800:5800'
+    volumes:
+      - ./Firefox:/config:rw
+    dns:
+      - 10.0.1.254
+    networks:
       bind9_subnet:
-        ipv4_address: 10.0.1.54
+        ipv4_address: 10.0.1.29
 networks:
   bind9_subnet:
     external: true

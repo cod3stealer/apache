@@ -320,7 +320,7 @@ services:
 # Instalación Wireshark
 
 1. En el archivo docker-compose.yml se debe escribir lo siguiente:
-*La parte de networks, realmente no haría falta, está puesto solo porque quería comprobar si se podría hacer ping entre contenedores*
+
 ```
 wireshark:
   image: lscr.io/linuxserver/wireshark:latest
@@ -349,30 +349,26 @@ docker-compose up
 ```
 # Firefox
 
-ejecuto:
+La siguiente linea de comando:
+
+*En el archivo docker-compose.yml se debe escribir lo siguiente:*
+
 ```
-docker run -d \
-    --name=firefox \
-    -p 5800:5800 \
-    -v /docker/appdata/firefox:/config:rw \
-    --shm-size 2g \
-    jlesage/firefox
-```
-en el docker-compose.yml
-```
-firefox:
-  image: lscr.io/linuxserver/firefox:latest
+ firefox:
   container_name: firefox
-  security_opt:
-    - seccomp:unconfined #optional
-  environment:
-    - PUID=1000
-    - PGID=1000
-    - TZ=Europe/London
+  image: jlesage/firefox
+  ports: 
+    - '5800:5800'
   volumes:
-    - /docker/appdata/firefox:/config
-  ports:
-    - 3001:3001
-  shm_size: "1gb"
-  restart: unless-stopped
+    - ./Firefox:/config:rw
+  dns:
+    - 10.0.1.254
+  networks:
+    bind9_subnet:
+      ipv4_address: 10.0.1.29
+```
+Luego de haber escrito esto, en la terminal:
+```
+docker-compose down -v
+docker-compose up
 ```
