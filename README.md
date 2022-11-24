@@ -372,3 +372,44 @@ Luego de haber escrito esto, en la terminal:
 docker-compose down -v
 docker-compose up
 ```
+
+# htpasswd
+
+apache => cd /etc/apache2
+apache => htpasswd -c password/ santi
+
+*user: santi*
+*password: castelao*
+
+default-ssl.conf:
+```
+<Directory /var/www/html/ssl>
+  AuthType Basic
+  AuthName "Restricted Files"
+  AuthUserFile /etc/apache2/password
+  Require user santi
+</Directory>
+```
+restart aoache container
+
+# mysql
+
+```
+db:
+  image: mysql
+  # NOTE: use of "mysql_native_password" is not recommended: https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password
+  # (this is just an example, not intended to be a production configuration)
+  command: --default-authentication-plugin=mysql_native_password
+  environment:
+    MYSQL_ROOT_PASSWORD: castelao # Esta va a ser la contraseña de root_mysql
+  networks:
+    bind9_subnet:
+      ipv4_address: 10.0.1.56
+
+ adminer:
+  image: adminer
+  depends_on:
+    - db
+  ports:
+    - 8080:80
+```
