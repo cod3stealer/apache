@@ -5,6 +5,7 @@ services:
   image: php:7.2-apache
   ports:
     - "80:80"
+    - "443:443"
   volumes:
     - /home/asir2a/Escritorio/SRI/tuto/server/html:/var/www/html:ro
     - /home/asir2a/Escritorio/SRI/tuto/server/apache2:/etc/apache2
@@ -35,6 +36,43 @@ services:
   networks:
     bind9_subnet:
       ipv4_address: 10.0.1.252
+ wireshark:
+  image: lscr.io/linuxserver/wireshark:latest
+  container_name: wireshark
+  cap_add:
+    - NET_ADMIN
+  security_opt:
+    - seccomp:unconfined 
+  environment:
+    - PUID=1000
+    - PGID=1000
+    - TZ=Europe/London
+  volumes:
+    - /path/to/config:/config
+  ports:
+    - 3000:3000 
+  restart: unless-stopped
+  networks:
+      bind9_subnet:
+        ipv4_address: 10.0.1.55
+ firefox:
+  image: lscr.io/linuxserver/firefox:latest
+  container_name: firefox
+  security_opt:
+    - seccomp:unconfined 
+  environment:
+    - PUID=1000
+    - PGID=1000
+    - TZ=Europe/London
+  volumes:
+    - /docker/appdata/firefox:/config
+  ports:
+    - 3001:3001
+  shm_size: "1gb"
+  restart: unless-stopped
+  networks:
+      bind9_subnet:
+        ipv4_address: 10.0.1.54
 networks:
   bind9_subnet:
     external: true

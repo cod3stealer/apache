@@ -287,3 +287,92 @@ Se deben configurar ambos archivos (*000-default.conf* / *002-default.conf*) par
 	
 </VirtualHost>
 ```
+# SSL port: 443
+
+apache shell => a2enmod ssl
+apache shell => service apache2 restart
+
+crear carpeta nueva para los certificados
+
+apache shell => cd /etc/apache2/certs
+apache shell => /etc/apache2/certs# openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out apache-certificate.crt -keyout apache.key
+
+ahora hay que crear el virtual host -> habilitar el virtual host del ssl
+creo un sitio /html/ssl 
+y en sites available -> default-ssl.conf lo siguiente:
+```
+ DocumentRoot /var/www/html/ssl
+ (...)
+ SSLCertificateFile	/etc/apache2/certs/apache-certificate.crt
+ SSLCertificateKeyFile /etc/apache2/certs/apache.key
+```
+Además, en el docker-compose.yml:
+```
+services:
+ apache-XD:
+  container_name: asir_apache
+  image: php:7.2-apache
+  ports:
+    - "80:80"
+ ** - "443:443" **
+```
+
+# Instalación Wireshark
+
+1. En el archivo docker-compose.yml se debe escribir lo siguiente:
+*La parte de networks, realmente no haría falta, está puesto solo porque quería comprobar si se podría hacer ping entre contenedores*
+```
+wireshark:
+  image: lscr.io/linuxserver/wireshark:latest
+  container_name: wireshark
+  cap_add:
+    - NET_ADMIN
+  security_opt:
+    - seccomp:unconfined 
+  environment:
+    - PUID=1000
+    - PGID=1000
+    - TZ=Europe/London
+  volumes:
+    - /docker/appdata/firefox:/config
+  ports:
+    - 3000:3000 
+  restart: unless-stopped
+  networks:
+      bind9_subnet:
+        ipv4_address: 10.0.1.55
+```
+Luego de haber escrito esto, en la terminal:
+```
+docker-compose down -v
+docker-compose up
+```
+# Firefox
+
+ejecuto:
+```
+docker run -d \
+    --name=firefox \
+    -p 5800:5800 \
+    -v /docker/appdata/firefox:/config:rw \
+    --shm-size 2g \
+    jlesage/firefox
+```
+en el docker-compose.yml
+```
+firefox:
+  image: lscr.io/linuxserver/firefox:latest
+  container_name: firefox
+  security_opt:
+    - seccomp:unconfined #optional
+  environment:
+    - PUID=1000
+    - PGID=1000
+    - TZ=Europe/London
+  volumes:
+    - /docker/appdata/firefox:/config
+  ports:
+    - 3001:3001
+  shm_size: "1gb"
+  restart: unless-stopped
+```
