@@ -287,19 +287,25 @@ Se deben configurar ambos archivos (*000-default.conf* / *002-default.conf*) par
 	
 </VirtualHost>
 ```
-# SSL port: 443
+# Instalaciones
+## Configuración HTTPS / SSL 
 
-apache shell => a2enmod ssl
-apache shell => service apache2 restart
+En la shell del contenedor de apache:
+```
+# a2enmod ssl
+# service apache2 restart
+# cd /etc/apache2/certs
+# /etc/apache2/certs# openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out apache-certificate.crt -keyout apache.key
+```
 
-crear carpeta nueva para los certificados
+*Es recomendable crear una carpeta nueva para los certificados SSL.*
 
-apache shell => cd /etc/apache2/certs
-apache shell => /etc/apache2/certs# openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out apache-certificate.crt -keyout apache.key
+Es siguiente paso se resume en la creación de un virtual host (es decir, habilitarlo):
+```
+mkdir ./html/ssl
+```
 
-ahora hay que crear el virtual host -> habilitar el virtual host del ssl
-creo un sitio /html/ssl 
-y en sites available -> default-ssl.conf lo siguiente:
+Luego, toca editar el archivo ./apache2/siter-enabled/default-ssl.conf con lo siguiente:
 ```
  DocumentRoot /var/www/html/ssl
  (...)
@@ -309,17 +315,18 @@ y en sites available -> default-ssl.conf lo siguiente:
 Además, en el docker-compose.yml:
 ```
 services:
- apache-XD:
+ apache:
   container_name: asir_apache
   image: php:7.2-apache
   ports:
     - "80:80"
  ** - "443:443" **
 ```
+*El puerto 443 es donde escuchará https (SSL)*
 
-# Instalación Wireshark
+## Instalación Wireshark
 
-1. En el archivo docker-compose.yml se debe escribir lo siguiente:
+En el archivo docker-compose.yml se debe escribir lo siguiente:
 
 ```
 wireshark:
@@ -347,7 +354,7 @@ Luego de haber escrito esto, en la terminal:
 docker-compose down -v
 docker-compose up
 ```
-# Firefox
+## Firefox
 
 La siguiente linea de comando:
 
@@ -373,15 +380,18 @@ docker-compose down -v
 docker-compose up
 ```
 
-# htpasswd
+## Configuración htpasswd
 
-apache => cd /etc/apache2
-apache => htpasswd -c password/ santi
-
+En la shell del contenedor apache:
+```
+# cd /etc/apache2
+# htpasswd -c password/ santi
+```
+En mi caso:
 *user: santi*
 *password: castelao*
 
-default-ssl.conf:
+Por último: en ./apache2/sites-enabled/default-ssl.conf:
 ```
 <Directory /var/www/html/ssl>
   AuthType Basic
@@ -389,11 +399,13 @@ default-ssl.conf:
   AuthUserFile /etc/apache2/password
   Require user santi
 </Directory>
+
 ```
-restart aoache container
+*Para probarlo solo hay que reiniciar el contenedor de apache.*
 
-# mysql
+## Instalación MYSQL
 
+Dentro del archivo docker-compose.yml:
 ```
 db:
   image: mysql
